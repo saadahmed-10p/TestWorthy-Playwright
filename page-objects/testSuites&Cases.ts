@@ -24,7 +24,7 @@ export class TestSuiteAndCases {
         this.saveTestCase = page.getByRole('button', { name: 'Save Test Case' })
         this.editIcon = page.locator('#editLink')
         this.saveEditBtn = page.locator('#btnUpdateCase')
-        this.sectionLink = page.getByRole('link', { name: 'Playwright Section' })
+        this.sectionLink = page.getByRole('link', { name: 'Playwright Section', exact:true })
         this.confirmDeleteBtn = page.getByRole('button', { name: 'Delete Test Case' })
         this.delRow = page.locator('.display-table')
         this.deleteIcon = page.locator('div.test-suites-table .delete-icon a .icon-trash')
@@ -43,6 +43,7 @@ export class TestSuiteAndCases {
 
     async editTestCase(tcTitle: string){
         await this.editIcon.click()
+        await this.testCaseTitle.clear()
         await this.testCaseTitle.fill(tcTitle)
         await this.saveEditBtn.click()
     }
@@ -52,5 +53,18 @@ export class TestSuiteAndCases {
         await this.delRow.last().hover()   
         await this.deleteIcon.last().click();
         await this.confirmDeleteBtn.click()
+    }
+
+    async getCreatedTestCaseTitle(): Promise<string> {
+        // Implement the logic to retrieve the title of the newly created test case
+        // This could involve finding the element on the page that contains the title
+        // and extracting its text or attribute value
+        const titleElement = await this.page.waitForSelector('div.textcaseid-content__text span');
+        const createdTestCaseTitle = await titleElement.textContent();
+        return createdTestCaseTitle;
+    }
+
+    async isTestCaseVisible(title: string): Promise<boolean> {
+        return await this.page.waitForSelector(`:text("${title}")`, { state: 'visible' }) !== null;
     }
 }

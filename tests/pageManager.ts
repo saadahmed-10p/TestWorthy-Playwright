@@ -18,7 +18,7 @@ export class PageManager {
         this.page = page
         this.loginPage = new LoginPage(page)
         this.dashboardPage = new Dashboard(page)
-        this.helperBase = new HelperBase(page)
+        this.helperBase = new HelperBase(this)
         this.testSuiteCase = new TestSuiteAndCases(page)
         this.fakerUtility = new FakerUtility()
     }

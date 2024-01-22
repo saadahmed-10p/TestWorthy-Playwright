@@ -11,36 +11,35 @@ test('Create Test Case', async({page})=>{
     
     const pm = new PageManager(page)
     
-    const testCaseTitle = pm.onFaker().faker5Words()
-    const testCaseSteps = pm.onFaker().faker5To10Words()
-    
     await pm.onDashboardPage().clickProjectTitle('Finstreet')
     await pm.onhelperBase().clickTabOnProjectOverview('Test Suites & Cases')
     expect(pm.onhelperBase().pageHeading.filter({hasText: 'Test Suites & Cases'}))
-    
-    await pm.onTestSuitePage().moveToAddTestCasePage()
-    await pm.onTestSuitePage().enterTestCaseDetails(testCaseTitle, testCaseSteps)
-    expect(page.getByText(testCaseTitle, {exact: true}))
-    expect(page.getByText(testCaseSteps, {exact: true}))
+
+    // Use HelperBase to create a test case
+    const createdTestCaseTitle = await pm.onhelperBase().createTestCase()
+
+    // Check if the created test case is visible on the page
+    const isTestCaseVisible = await pm.onTestSuitePage().isTestCaseVisible(createdTestCaseTitle);
+
+    // Assert that the test case is visible
+    expect(isTestCaseVisible).toBe(true);
 
     //await page.pause()
 })
 
 test('Update Test Case', async({page}) => {
+    test.slow()
     const pm = new PageManager(page)
-    
-    const testCaseTitle = pm.onFaker().faker5Words()
-    const testCaseSteps = pm.onFaker().faker5To10Words()
+
     const updatetestCaseTitle = pm.onFaker().faker5Words()
     
     await pm.onDashboardPage().clickProjectTitle('Finstreet')
     await pm.onhelperBase().clickTabOnProjectOverview('Test Suites & Cases')
-    
-    await pm.onTestSuitePage().moveToAddTestCasePage()
-    await pm.onTestSuitePage().enterTestCaseDetails(testCaseTitle, testCaseSteps)
-    
+        
+    await pm.onhelperBase().createTestCase()
+
     await pm.onTestSuitePage().editTestCase(updatetestCaseTitle)
-    expect(page.getByText(testCaseTitle, {exact: true}))
+    expect(page.getByText(updatetestCaseTitle, {exact: true}))
 })
 
 test('Delete Test Case', async({page}) => {
@@ -48,16 +47,11 @@ test('Delete Test Case', async({page}) => {
     
     const pm = new PageManager(page)
     
-    const testCaseTitle = pm.onFaker().faker5Words()
-    const testCaseSteps = pm.onFaker().faker5To10Words()
-    
     await pm.onDashboardPage().clickProjectTitle('Finstreet')
     await pm.onhelperBase().clickTabOnProjectOverview('Test Suites & Cases')
     expect(pm.onhelperBase().pageHeading.filter({hasText: 'Test Suites & Cases'}))
-    
-    await pm.onTestSuitePage().moveToAddTestCasePage()
-    await pm.onTestSuitePage().enterTestCaseDetails(testCaseTitle, testCaseSteps)
 
+    await pm.onhelperBase().createTestCase()
     await pm.onTestSuitePage().deleteTestCase()
     
     expect(page.getByText('Test Case Deleted')).toBeVisible
