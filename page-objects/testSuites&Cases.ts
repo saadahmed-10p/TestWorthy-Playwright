@@ -56,9 +56,6 @@ export class TestSuiteAndCases {
     }
 
     async getCreatedTestCaseTitle(): Promise<string> {
-        // Implement the logic to retrieve the title of the newly created test case
-        // This could involve finding the element on the page that contains the title
-        // and extracting its text or attribute value
         const titleElement = await this.page.waitForSelector('div.textcaseid-content__text span');
         const createdTestCaseTitle = await titleElement.textContent();
         return createdTestCaseTitle;
