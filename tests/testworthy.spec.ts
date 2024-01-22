@@ -6,7 +6,7 @@ test.beforeEach(async ({page})=>{
     await page.waitForLoadState()
 })
 
-test('Create Test Case', async({page})=>{
+test('User should be able to create test case in the specified suite', async({page})=>{
     test.slow()
     
     const pm = new PageManager(page)
@@ -27,7 +27,7 @@ test('Create Test Case', async({page})=>{
     //await page.pause()
 })
 
-test('Update Test Case', async({page}) => {
+test('user should be able to update the created test case', async({page}) => {
     test.slow()
     const pm = new PageManager(page)
 
@@ -42,7 +42,7 @@ test('Update Test Case', async({page}) => {
     expect(page.getByText(updatetestCaseTitle, {exact: true}))
 })
 
-test('Delete Test Case', async({page}) => {
+test('User should be able to delete the created test case', async({page}) => {
     test.slow()
     
     const pm = new PageManager(page)
