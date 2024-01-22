@@ -1,9 +1,11 @@
-import { expect, test as setup } from "@playwright/test";
+import test, { expect, test as setup } from "@playwright/test";
 import { PageManager } from "./pageManager";
 
 const authFile = ".auth/user.json";
 
 setup("authentication", async ({ page }) => {
+  
+  test.slow()
   await page.goto("/login");
   await page.waitForLoadState();
 

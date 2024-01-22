@@ -14,10 +14,12 @@ export class TestSuiteAndCases {
     readonly confirmDeleteBtn: Locator
     readonly delRow: Locator
     readonly deleteIcon: Locator
+    readonly testSuiteNegative: Locator
 
     constructor(page: Page){
         this.page = page
         this.testSuite = page.getByRole('link', { name: 'Playwright' })
+        this.testSuiteNegative = page.getByRole('link', { name: 'Negative' })
         this.addTestCaseBtn = page.getByRole('button', {name: 'Add Test Case'})
         this.testCaseTitle = page.locator('#Title')
         this.testCaseStep = page.frameLocator('iframe[title="Rich Text Editor\\, CustomSteps_0"]').locator('body')
@@ -64,4 +66,28 @@ export class TestSuiteAndCases {
     async isTestCaseVisible(title: string): Promise<boolean> {
         return await this.page.waitForSelector(`:text("${title}")`, { state: 'visible' }) !== null;
     }
+
+    async createNegativeTestCase(): Promise<void> {
+           
+        await this.moveToAddTestCasePage();
+
+        try {
+        await this.testCaseTitle.fill('')
+        await this.testCaseStep.fill('')       
+       await this.saveTestCase.click()
+    }  catch (error) {
+       
+        console.error('Error creating negative test case:', error.message);
+    }
+}
+
+    async moveToNegativeTestCasePage(){
+        await this.testSuiteNegative.click()
+        await this.addTestCaseBtn.click()
+    }
+
+    async moveToTestSuitePage(){
+        await this.testSuite.click()
+    }
+
 }
