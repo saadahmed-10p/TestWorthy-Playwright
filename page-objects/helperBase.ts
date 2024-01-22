@@ -1,4 +1,3 @@
-// HelperBase.ts
 import { Locator, Page } from "@playwright/test";
 import { PageManager } from "../tests/pageManager";
 
