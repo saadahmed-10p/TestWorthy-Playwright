@@ -54,6 +54,6 @@ test('User should be able to delete the created test case', async({page}) => {
     await pm.onhelperBase().createTestCase()
     await pm.onTestSuitePage().deleteTestCase()
     
-    expect(page.getByText('Test Case Deleted')).toBeVisible
+    expect(page.getByText('Test Case Deleted')).toBeVisible()
 
 })
